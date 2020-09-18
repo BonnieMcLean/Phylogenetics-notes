@@ -1,7 +1,8 @@
 # Tutorial on computational linguistic phylogeny
 
-## Trees
+## Basics: trees and networks
 
+### Trees
 <Figure>
 
 ![](https://i.imgur.com/AyFMzd2.png)
@@ -15,13 +16,15 @@
 <FigCaption>Unrooted tree</FigCaption>
 </Figure>
 
-**Unresolved tree/high degree node (or polytomy)**: when a node has many children, because you don't know what all the splits are (there was probably more than one separate splitting event to produce all those children, but you just don't know what they were).
+**Polytomy**: When a node has many children. Such nodes are called *high degree nodes*, and trees containing such nodes are *unresolved trees*.
 
 **Hard polytomy**: nodes with three or more daughters which represent a true radiation, i.e. an exception to the usual assumption that diversification is bifurcating. 
 
-**Soft polytomy**: a high degree nodes where the large number of daughters represents a lack of information, so that the true history (which is probably bifurcating) is unclear. These are most common, and the default polytomy in general. A soft polytomy is consistent with any more resolved analyses of its subbranches--soft polytomies assert that all refinements in the tree are viable candidates for the true evolutionary history--whereas a hard polytomy is not.
+**Soft polytomy**: a high degree node where the large number of daughters represents a lack of information, so that the true history (which is probably bifurcating) is unclear. Soft polytomy is considered the default polytomy (hard polytomies are exceptions). 
 
-## Networks
+Note that a soft polytomy is consistent with any more resolved analyses of its subbranches--soft polytomies assert that all refinements in the tree are viable candidates for the true evolutionary history--whereas a hard polytomy is not.
+
+### Networks
 <Figure>
 
 ![](https://i.imgur.com/MwmpR8N.png)
@@ -159,21 +162,23 @@ Any comparison between two methods should take the degree of failure of these cr
 
 The problem is, often just using these benchmark trees and datasets is not enough to distinguish the methods (they may all produce the established subgroupings). The ability to match established subgroups is a relatively basic capability that can be accomplished by many methods, which can otherwise produce very different solutions.
 
-So you should also look at the assumptions made by the method when evaluating it.
+So you should also look at the assumptions made by the method when evaluating it, and you can also do simulation studies.
 
-1. Theoretical guarantees: the conditions under which a method is *guaranteed* to produce an accurate estimation (note that these sufficient conditions may not be necessary in the sense that the method may produce the true tree even when the conditions do not hold). You should ask whether it is reasonable to assume the data being analysed will have the required properties. Below are the conditions for different methods:
+1. **Theoretical guarantees**: the conditions under which a method is *guaranteed* to produce an accurate estimation (note that these sufficient conditions may not be necessary in the sense that the method may produce the true tree even when the conditions do not hold). You should ask whether it is reasonable to assume the data being analysed will have the required properties. Below are the conditions for different methods:
     - MP and MC (weighted or unweighted): these are guaranteed to produce the true tree when characters evolve in such a way that the tree with the minimum number of events is the true tree. One condition under which this holds is if the characters evolve without any homoplasy at all (so no back mutation or parallel evolution) and without any borrowing. This is highly unrealistic. However, all gurantees regarding methods for MP and MC apply only if the optimisation problems are solved optimally, which basically never happens.
     - For most models considered in phylogenetics, maximum likelihood and Bayesian methods will produce the true tree provided the true evolutionary process matches the assumed model, the dataset contains enough characters, and the methods are run exactly instead of heuristically (i.e. run long enough). 
     - Neighbour joining is guaranteed to produce the true tree when the pairwise distance matrix is sufficiently close to an additive matrix defining the true tree. Typically, additive matrices in linguistic phylogenetics define the pairwise distance between two languages to be equal to the number of character state changes (e.g. word replacements) that occured in the evolutionary history between the two languages.
     - UPGMA, used in glottochronology, is guaranteed to produce the true tree when evolution is sufficiently close to clocklike and there are enough characters. It is not guranteed to reconstruct the correct tree on additive matrices defining the true tree unless the true tree branch lengths obey the lexical clock.
     - Gray and Atkinson's Bayesian method is guranteed to be correct (with respect to estimations of tree topology) when all the binary characters (each based on a single cognate set) evolve **identically** and independently of each other--`this is may be a problem for me because the ideophones evolve differently from the non-ideophones... more likely for homoplasy to occur. I also don't know that the evolution of the meanings of ideophones are independent of each other... a new ideophone appearing for some concept may trigger a shift in meaning of another ideophone for the same concept`. The dating aspect of their method is guaranteed to be correct when the data evolve under a lexical clock.
-
-**Running models 'long enough'**
-Unfortunately, there is no reliable way of determining whether a heuristic has been run 'long enough' but in practice, the methods are run until improvements have not been obtained for some period of time. Heuristics for NP-hard optimisation problems need to be run 'long enough', as do Bayesian analyses. For Bayesian analyses, it's because they employ employ Markov Chain Monte Carlo (MCMC) techniques (which are based on randomization) to move through ‘model tree space’. These techniques have the theoretical guarantee that if run long enough, the random walk is supposed to have arrived at
-a stationary distribution, in which further random walking produces only temporary fluctuation, and when this happens the output from the Bayesian analysis will have the correct theoretical properties. When this happens,
-the maximum posterior probability tree produced by the analysis will be guaranteed to be the true tree. There are techniques that can be applied to detect that the method has not been run long
-enough, but these techniques do not allow the user to determine that the method has for sure been run long enough. `For the Bayesian analyses
+    - Drawback: datasets rarely meet these theoretical guarantees in real life.
+    - It's also not clear how long is 'long enough' when running the models. In practice, the methods are run until improvements have not been obtained for some period of time, but there is no reliable way to determine whether this is actually long enough. Heuristics for NP-hard optimisation problems need to be run 'long enough', as do Bayesian analyses. For Bayesian analyses, it's because they employ employ Markov Chain Monte Carlo (MCMC) techniques (which are based on randomization) to move through ‘model tree space’. These techniques have the theoretical guarantee that if run long enough, the random walk is supposed to have arrived at a stationary distribution, in which further random walking produces only temporary fluctuation, and when this happens the output from the Bayesian analysis will have the correct theoretical properties. When this happens, the maximum posterior probability tree produced by the analysis will be guaranteed to be the true tree. There are techniques that can be applied to detect that the method has not been run long enough, but these techniques do not allow the user to determine that the method has for sure been run long enough. `For the Bayesian analyses
 used in linguistics, it is quite possible that runs of a few days are sufficient (for small enough datasets), but it is also possible that the phylogenetic analysis would be different in interesting and important ways if the analyses were allowed to run for longer. Until these questions are studied carefully, however, caution seems the best policy.`
+2. **Simulation studies**
+    - A model phylogony T (tree or network) is produced, along with the associatied parameters of evolution.
+    - Characters are evolved from the root of the phylogeny to the leaves, producing a set S of languages at the leaves of the phylogeny.
+    - The set S is given to a phylogeny estimation procedure, and a tree or network T' is produced by the analysis.
+    - The estimated phylogeny T' is compared to the true phylogeny T, and the error is computed.
+    - Drawback: the simulation study will be relevant to phylogeny estimation only to the extent that the simulation study is based on a sufficiently realistic model of language evolution.
 
 ### Recommended benchmark datasets
 These are young families for which both dating and subgrouping are firm because of written evidence and/or historical records
@@ -189,5 +194,24 @@ Older groups for which subgrouping is well understood and dating clear from arch
 * Indo-European. Date and place of origin are very clear from archaeology (e.g. Anthony 2007). Major subgroups are well understood. Dyen et al (1992) provides lexical data coded for cognacy. The larger set of characters, including lexical as well as phonological and morphological ones, assembled by Don Ringe and Ann Taylor for 24 Indo-European languages for the papers by Ringe, Warnow, and their colleagues, is available at http://www.cs.rice.edu/~nakhleh/CPHL/datasets. These two databases for Indo-European differ in several ways: the Dyen et al. data are based upon modern languages, while the Ringe-Taylor data are based upon the earliest well-attested languages in each branch; furthermore, the Dyen et al. data have not been checked carefully with respect to cognate judgments, and it is likely that there are false positives (words noted as cognates that are not true cognates) in that database.
 * Two other families with some uncertainties in their subgrouping but high-quality datasets available on-line are: (i) Bantu (sub-subgroup of Benue-Kwa, a subgroup of the large and very old Niger-Congo, or Niger-Kordofanian, family); The Comparative Bantu On-line Dictionary has extensive lexical data (www.cbold.ddl.ish-lyon.cnrs.fr/); and (ii) Sino-Tibetan – a large and old family of which Chinese is one branch; The Sino-Tibetan Etymological Dictionary and Thesaurus has extensive lexical data (http://stedt.berkeley.edu).
 
-### Ways to compare trees
-* the **Robinson-Foulds (RF) metric** (Robinson and Foulds 1981), is the standard measure when both trees are binary (i.e., fully resolved). Here we consider each tree to be represented by the set of edges it contains, and each edge is defined by the way it splits the set of leaves into two parts. The RF metric measures the difference between these two sets, normalized to produce a number between 0 and 1. Thus, if the normalized RF distance between trees T1 and T2 is 10%, then this asserts that 90% of the edges of the two trees define the same splits, and they differ only in 10% of their edges. RF rates above 10% are generally considered poor, but sometimes the data are such that better estimates are not really possible. Some studies have separated out the RF error into two types of errors: false positives (edges that appear in the estimated tree but not in the true tree) and false negatives (edges that are in the true tree but not the estimated tree). These studies allow the two types of error to be distinguished. When both the estimated tree and the true tree are bifurcating, there will be equal numbers of both types of errors; however, as one or both of these trees can be incompletely resolved, distinguishing between the two types of errors can be quite informative. These error rates too are normalized by the number of edges in the respective trees, and error rates above 10% are considered poor.
+### Comparing trees with benchmark trees (to assess accuracy)
+**For regular trees:**
+* the **Robinson-Foulds (RF) metric** (Robinson and Foulds 1981), is the standard measure when *both trees are binary (i.e., fully resolved)*. Here we consider each tree to be represented by the set of edges it contains, and each edge is defined by the way it splits the set of leaves into two parts. The RF metric measures the difference between these two sets, normalized to produce a number between 0 and 1. Thus, if the normalized RF distance between trees T1 and T2 is 10%, then this asserts that 90% of the edges of the two trees define the same splits, and they differ only in 10% of their edges. RF rates above 10% are generally considered poor, but sometimes the data are such that better estimates are not really possible. 
+* Some studies have separated out the RF error into two types of errors: false positives (edges that appear in the estimated tree but not in the true tree) and false negatives (edges that are in the true tree but not the estimated tree). These studies allow the two types of error to be distinguished. When both the estimated tree and the true tree are bifurcating, there will be equal numbers of both types of errors; however, as one or both of these trees can be incompletely resolved, distinguishing between the two types of errors can be quite informative. These error rates too are normalized by the number of edges in the respective trees, and error rates above 10% are considered poor. --> `the RF error rate is the error rate of the comparison between the trees (I think)`
+
+**For networks**
+When either tree has reticulations (which means it's a network, not a tree) it's harder to compare them. However, when the model phylogeny is a network representing borrowing between languages without any creolisation or koine formation, and the estimated phylogenies are all trees, it is possible to compare them.
+* The model phylogenetic network has an underlying genetic tree on top of which there are borrowing edges. In this case, the estimated trees can be compared to the genetic tree using the standard RF criterion given above.
+* If there is creolisation or koine formation involved in the network, we don't have the methods yet to handle it.
+
+### Other statistical evaluation measures
+
+* CI, RCI (rescaled consistency index): ranges from 0.0 to 1.0, and measures the amount of homoplasy in the data, with 1.0 indicating no homoplasy at all (Naylor and Kraus 1995: 559). Since MP performs well under conditions of low homoplasy, an MP analysis of a dataset with very little homoplasy (RCI close to 1.0) will potentially be highly accurate (and MP analyses of datasets with a lot of homoplasy may not be very accurate)
+* When either the CI or RCI is very close to 1.0, the argument that the data are evolving in a tree-like fashion is probably reasonable. If there is no homoplasy at all, then no borrowing needs to be posited to explain the data.
+
+## Summary
+Phlyogeny estimation methods are evaluate in terms of their accuracy in 
+* simulation
+* benchmark datasets
+* with respect to their theoretical guarantees--appealing, but only apply under rather unrealistic conditions: languages evolve exactly according to the assumed model, and there are a sufficiently large number of characters available for analysis.
+
