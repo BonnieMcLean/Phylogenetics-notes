@@ -215,12 +215,34 @@ When either tree has reticulations (which means it's a network, not a tree) it's
 
 The graphical models best suited to represent linguistic evolution in the presence of borrowing are phylogenetic **networks rather than trees**, but there are no standards for measuring amounts of reticulation and no averages for comparison. As a consequence, commentators differ in whether they consider a given phylogenetic network to be basically reticulate or basically tree-like.
 
+Field (2002) and Haspelmath and Tadmor (n.d.) find cross-linguistic semantic regularities in the propensity of words to be borrowed.
+
 ## Distance measures; dating (absolute chronology)
 
 Some phylogenetic methods (largely distance-based methods like NJ and UPGMA, but also maximum likelihood) produce trees that indicate not
 only subgrouping but also branch lengths. The interpretation of these branch lengths depends on the model assumptions, but in most cases these
 lengths correspond to the expected number of changes that should occur for a randomly selected character. When evolution is clocklike, however,
 these also correspond to the elapsed time for that edge. Thus, the algorithmic techniques involved in glottochronology produce estimates of branch length and family ages, because they make the assumption that the evolution is clocklike.
+
+### lexical stability, what influences rate of replacement?
+
+* High frequency words are more stable: Pagel et al.(2007) test lexical replacement in Indo-European and find that the effect is consistent across branches.
+* McMahon and McMahon (2005: 103–11) and Lohr (1999) identify more and less stable vocabulary items.
+* Nichols (2006) and Nichols (2007) show that the overall lexical type of a language imposes differential propensities to change independent of lexical frequency (e.g., stance verbs are more stable in base-intransitive languages than in base-transitive languages).
+* Lexical replacement often proceeds more rapidly under intense contact (the permeation of English by Romance vocabulary is a classic example).
+* Dialect mixture can produce a vocabulary containing ultimately cognate vocabulary from different dialect sources, confounding the task of distinguishing cognates from borrowings (Lynch 1999 for southern Vanuatu).
+* Social change can sometimes produce rapid language change, as when the Norman conquest of England disrupted social institutions and unseated West Saxon from its position as standard and interethnic language, allowing dialect variety to emerge, undermining existing stabilizing attitudes, and making possible the rapid transition to the grammatically and lexically innovative Middle English.
+* The movement of Blackfoot, Arapahoan, and Cheyenne away from the eastern mass of Algonquian languages to the Great Plains and into contact with Plains culture seems to have coincided with rapid phonological change in these languages
+* On the other hand, no similar acceleration of change occurred when some Apachean (Athabaskan) languages and Kiowa (Kiowa-Tanoan) similarly moved onto the plains and/or into the penumbra of Plains culture (for some of these developments, see Goddard 1996; Ives 2003).
+
+### why is this important?
+
+- When using trees for glottochronology, the mathematical conditions required in order to be able to accurately estimate dates include significant restrictions on how much variability there can be between the different characters’ evolutionary processes. In particular, different characters need to speed up or slow down relative to each other in such a manner that if one character evolves twice as quickly as another character on one edge in the tree, then it evolves twice as quickly as that other character on every edge in the tree (Evans et al. 2006). This assumption, called the **rates-across-sites’ assumption**, may not be realistic.
+- even when the rates-across-sites assumption holds, if the characters draw their rates from a distribution that is not sufficiently simple, then it may still be impossible to estimate dates correctly (Evans and Warnow 2005).
+
+## Review of Literature
+
+
 
 ## Statistical models of language evolution
 
